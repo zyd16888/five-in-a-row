@@ -37,7 +37,7 @@ class GomokuView @JvmOverloads constructor(
     private var difficulty = 1
 
     // AI实例
-    private val ai = GomokuAI(max(boardSizeRows, boardSizeCols))
+    private val ai = GomokuAI(boardSizeRows, boardSizeCols)
 
     // 格子大小和边距，在onMeasure中计算
     private var cellSize = 0f
@@ -383,7 +383,7 @@ class GomokuView @JvmOverloads constructor(
         board = Array(boardSizeRows) { IntArray(boardSizeCols) { 0 } }
         
         // 更新AI的棋盘尺寸
-        ai.setBoardSize(max(boardSizeRows, boardSizeCols))
+        ai.setBoardSize(boardSizeRows, boardSizeCols)
         
         // 重置游戏
         resetGame()

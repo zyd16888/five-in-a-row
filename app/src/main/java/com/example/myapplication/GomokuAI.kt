@@ -2,7 +2,7 @@ package com.example.myapplication
 
 import kotlin.random.Random
 
-class GomokuAI(private var boardSize: Int) {
+class GomokuAI(private var boardSizeRows: Int, private var boardSizeCols: Int) {
 
     // 难度级别：0=简单，1=中等，2=困难
     private var difficultyLevel = 1
@@ -31,6 +31,9 @@ class GomokuAI(private var boardSize: Int) {
         intArrayOf(1, -1)  // 反对角线
     )
 
+    // 为了兼容性提供的构造函数
+    constructor(size: Int) : this(size, size)
+
     // 设置难度级别
     fun setDifficultyLevel(level: Int) {
         difficultyLevel = level
@@ -46,10 +49,19 @@ class GomokuAI(private var boardSize: Int) {
         board = boardState
     }
     
-    // 设置棋盘大小
+    // 设置棋盘大小（单一参数 - 正方形棋盘）
     fun setBoardSize(size: Int) {
         if (size > 0) {
-            boardSize = size
+            boardSizeRows = size
+            boardSizeCols = size
+        }
+    }
+    
+    // 设置棋盘大小（两个参数 - 支持非正方形棋盘）
+    fun setBoardSize(rows: Int, cols: Int) {
+        if (rows > 0 && cols > 0) {
+            boardSizeRows = rows
+            boardSizeCols = cols
         }
     }
 
@@ -57,11 +69,13 @@ class GomokuAI(private var boardSize: Int) {
     fun getNextMove(): Pair<Int, Int> {
         // 如果是空棋盘，随机选择靠近中心的位置
         if (isEmptyBoard()) {
-            val center = boardSize / 2
-            val range = 2
+            val centerRow = boardSizeRows / 2
+            val centerCol = boardSizeCols / 2
+            val rangeRow = minOf(2, boardSizeRows / 4)
+            val rangeCol = minOf(2, boardSizeCols / 4)
             return Pair(
-                Random.nextInt(center - range, center + range + 1),
-                Random.nextInt(center - range, center + range + 1)
+                Random.nextInt(centerRow - rangeRow, centerRow + rangeRow + 1),
+                Random.nextInt(centerCol - rangeCol, centerCol + rangeCol + 1)
             )
         }
 
@@ -74,8 +88,8 @@ class GomokuAI(private var boardSize: Int) {
         var bestScore = -1
         var bestMoves = mutableListOf<Pair<Int, Int>>()
 
-        for (i in 0 until boardSize) {
-            for (j in 0 until boardSize) {
+        for (i in 0 until boardSizeRows) {
+            for (j in 0 until boardSizeCols) {
                 if (board[i][j] == 0) { // 空位
                     val score = evaluatePosition(i, j)
                     
@@ -111,8 +125,8 @@ class GomokuAI(private var boardSize: Int) {
     private fun getRandomValidMove(): Pair<Int, Int> {
         val validMoves = mutableListOf<Pair<Int, Int>>()
         
-        for (i in 0 until boardSize) {
-            for (j in 0 until boardSize) {
+        for (i in 0 until boardSizeRows) {
+            for (j in 0 until boardSizeCols) {
                 if (board[i][j] == 0) {
                     validMoves.add(Pair(i, j))
                 }
@@ -128,8 +142,8 @@ class GomokuAI(private var boardSize: Int) {
     
     // 检查是否是空棋盘
     private fun isEmptyBoard(): Boolean {
-        for (i in 0 until boardSize) {
-            for (j in 0 until boardSize) {
+        for (i in 0 until boardSizeRows) {
+            for (j in 0 until boardSizeCols) {
                 if (board[i][j] != 0) {
                     return false
                 }
@@ -199,7 +213,7 @@ class GomokuAI(private var boardSize: Int) {
         
         // 最多检查5个位置
         for (i in 0 until 5) {
-            if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
+            if (r >= 0 && r < boardSizeRows && c >= 0 && c < boardSizeCols) {
                 if (board[r][c] == piece) {
                     count++
                 } else if (board[r][c] != 0) {
@@ -222,7 +236,7 @@ class GomokuAI(private var boardSize: Int) {
         
         // 最多检查4个位置（因为起始点已经计算过了）
         for (i in 0 until 4) {
-            if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
+            if (r >= 0 && r < boardSizeRows && c >= 0 && c < boardSizeCols) {
                 if (board[r][c] == piece) {
                     count++
                 } else if (board[r][c] != 0) {

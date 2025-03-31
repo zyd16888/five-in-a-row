@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 
@@ -12,7 +13,7 @@ class GameActivity : ComponentActivity() {
     private lateinit var gomokuView: GomokuView
     private lateinit var gameStatusText: TextView
     private lateinit var resetButton: Button
-    private lateinit var backButton: Button
+    private lateinit var backButton: ImageButton
     private lateinit var winOverlay: FrameLayout
     private lateinit var winText: TextView
     private lateinit var winResetButton: Button

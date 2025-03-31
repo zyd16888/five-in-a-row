@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="8dp"
@@ -26,39 +26,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="24dp"
+            android:padding="16dp"
             android:text="五子棋"
             android:textColor="#333333"
-            android:textSize="36sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/mode_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_card">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:text="游戏模式"
                 android:textColor="#333333"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <RadioGroup
@@ -72,28 +73,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:text="双人对战"
                     android:textColor="#333333"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <RadioButton
                     android:id="@+id/mode_player_first"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:text="人机对战 - 玩家先手"
                     android:textColor="#333333"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <RadioButton
                     android:id="@+id/mode_ai_first"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:text="人机对战 - AI先手"
                     android:textColor="#333333"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </RadioGroup>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -101,29 +102,30 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/difficulty_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mode_card">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
-
+            android:padding="12dp">
+  
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:text="难度级别"
                 android:textColor="#333333"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <RadioGroup
@@ -136,29 +138,29 @@
                     android:id="@+id/difficulty_easy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:text="简单"
                     android:textColor="#333333"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <RadioButton
                     android:id="@+id/difficulty_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:text="中等"
                     android:textColor="#333333"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <RadioButton
                     android:id="@+id/difficulty_hard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:text="困难"
                     android:textColor="#333333"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </RadioGroup>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -166,29 +168,30 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/board_size_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/difficulty_card">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:text="棋盘大小"
                 android:textColor="#333333"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <RadioGroup
@@ -240,29 +243,30 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/board_color_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board_size_card">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:text="棋盘颜色"
                 android:textColor="#333333"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -321,27 +325,26 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
         app:cardCornerRadius="24dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board_color_card"
-        app:layout_constraintVertical_bias="0.9">
+        app:layout_constraintVertical_bias="0.7">
 
         <Button
             android:id="@+id/start_game_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_background"
-            android:paddingStart="48dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="48dp"
-            android:paddingBottom="12dp"
+            android:paddingStart="40dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="40dp"
+            android:paddingBottom="8dp"
             android:text="开始游戏"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 

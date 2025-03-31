@@ -23,6 +23,7 @@ class GameActivity : ComponentActivity() {
     private var difficulty = 1
     private var boardSizeRows = 15
     private var boardSizeCols = 15
+    private var boardColor = "#E3B448" // 默认棋盘颜色
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,7 @@ class GameActivity : ComponentActivity() {
         difficulty = intent.getIntExtra("DIFFICULTY", 1)
         boardSizeRows = intent.getIntExtra("BOARD_SIZE_ROWS", 15)
         boardSizeCols = intent.getIntExtra("BOARD_SIZE_COLS", 15)
+        boardColor = intent.getStringExtra("BOARD_COLOR") ?: "#E3B448"
         
         // 初始化视图
         gomokuView = findViewById(R.id.gomoku_view)
@@ -46,6 +48,7 @@ class GameActivity : ComponentActivity() {
         // 设置游戏模式、难度和棋盘大小
         gomokuView.setDifficulty(difficulty)
         gomokuView.setBoardSize(boardSizeRows, boardSizeCols)
+        gomokuView.setBoardColor(boardColor) // 设置棋盘颜色
         gomokuView.setGameMode(gameMode)
         
         // 设置游戏状态变化监听器

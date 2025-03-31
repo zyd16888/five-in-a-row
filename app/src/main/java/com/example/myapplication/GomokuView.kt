@@ -36,6 +36,9 @@ class GomokuView @JvmOverloads constructor(
     // AI难度: 0=简单, 1=中等, 2=困难
     private var difficulty = 1
 
+    // 棋盘颜色
+    private var boardColorHex = "#E3B448"
+
     // AI实例
     private val ai = GomokuAI(boardSizeRows, boardSizeCols)
 
@@ -365,6 +368,20 @@ class GomokuView @JvmOverloads constructor(
     fun setDifficulty(level: Int) {
         difficulty = level
         ai.setDifficultyLevel(level)
+    }
+
+    // 设置棋盘颜色
+    fun setBoardColor(colorHex: String) {
+        try {
+            // 尝试解析颜色代码
+            val colorInt = Color.parseColor(colorHex)
+            boardColorHex = colorHex
+            boardPaint.color = colorInt
+            invalidate() // 重绘视图
+        } catch (e: Exception) {
+            // 如果颜色代码无效，使用默认颜色
+            boardPaint.color = Color.parseColor("#E3B448")
+        }
     }
 
     // 设置棋盘尺寸

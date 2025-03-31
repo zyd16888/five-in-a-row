@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import kotlin.math.min
+import kotlin.math.max
 
 class GomokuView @JvmOverloads constructor(
     context: Context,
@@ -16,11 +17,12 @@ class GomokuView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    // 棋盘尺寸 - 标准五子棋是15x15
-    private val boardSize = 15
+    // 棋盘尺寸 - 默认为15x15
+    private var boardSizeRows = 15
+    private var boardSizeCols = 15
 
     // 保存棋盘状态：0=空，1=黑棋，2=白棋
-    private val board = Array(boardSize) { IntArray(boardSize) { 0 } }
+    private var board = Array(boardSizeRows) { IntArray(boardSizeCols) { 0 } }
 
     // 当前玩家：1=黑棋，2=白棋
     private var currentPlayer = 1
@@ -35,7 +37,7 @@ class GomokuView @JvmOverloads constructor(
     private var difficulty = 1
 
     // AI实例
-    private val ai = GomokuAI(boardSize)
+    private val ai = GomokuAI(max(boardSizeRows, boardSizeCols))
 
     // 格子大小和边距，在onMeasure中计算
     private var cellSize = 0f
@@ -104,16 +106,21 @@ class GomokuView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
-        // 取最小的边作为视图的尺寸以保证正方形
-        val size = min(
-            MeasureSpec.getSize(widthMeasureSpec),
-            MeasureSpec.getSize(heightMeasureSpec)
-        )
-        setMeasuredDimension(size, size)
+        val width = MeasureSpec.getSize(widthMeasureSpec)
+        val height = MeasureSpec.getSize(heightMeasureSpec)
+        
+        // 保持视图原有尺寸，不强制为正方形
+        setMeasuredDimension(width, height)
 
-        // 计算格子尺寸和边距
-        padding = size * 0.05f
-        cellSize = (size - 2 * padding) / (boardSize - 1)
+        // 计算格子尺寸和边距，考虑非正方形棋盘
+        padding = min(width, height) * 0.05f
+        
+        // 根据棋盘列数和行数计算合适的格子大小
+        val cellWidthAvailable = (width - 2 * padding) / (boardSizeCols - 1)
+        val cellHeightAvailable = (height - 2 * padding) / (boardSizeRows - 1)
+        
+        // 取最小值确保格子是正方形
+        cellSize = min(cellWidthAvailable, cellHeightAvailable)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -134,48 +141,80 @@ class GomokuView @JvmOverloads constructor(
 
     private fun drawBoardLines(canvas: Canvas) {
         // 画横线
-        for (i in 0 until boardSize) {
+        for (i in 0 until boardSizeRows) {
             canvas.drawLine(
                 padding,
                 padding + i * cellSize,
-                width - padding,
+                padding + (boardSizeCols - 1) * cellSize,
                 padding + i * cellSize,
                 linePaint
             )
         }
 
         // 画竖线
-        for (i in 0 until boardSize) {
+        for (i in 0 until boardSizeCols) {
             canvas.drawLine(
                 padding + i * cellSize,
                 padding,
                 padding + i * cellSize,
-                height - padding,
+                padding + (boardSizeRows - 1) * cellSize,
                 linePaint
             )
         }
     }
     
     private fun drawStarPoints(canvas: Canvas) {
-        // 星位点位置（3-3, 3-11, 7-7, 11-3, 11-11）
-        val starPoints = arrayOf(
-            Pair(3, 3), Pair(3, 11), 
-            Pair(7, 7), 
-            Pair(11, 3), Pair(11, 11)
-        )
+        // 根据棋盘大小动态计算星位点位置
+        val starPoints = mutableListOf<Pair<Int, Int>>()
         
-        for ((row, col) in starPoints) {
-            val cx = padding + col * cellSize
-            val cy = padding + row * cellSize
-            val radius = cellSize * 0.15f
+        // 小号棋盘（15x15及以下）
+        if (boardSizeRows <= 15 && boardSizeCols <= 15) {
+            // 标准五子棋星位点（3-3, 3-11, 7-7, 11-3, 11-11）
+            if (boardSizeRows >= 15 && boardSizeCols >= 15) {
+                starPoints.add(Pair(3, 3))
+                starPoints.add(Pair(3, 11))
+                starPoints.add(Pair(7, 7))
+                starPoints.add(Pair(11, 3))
+                starPoints.add(Pair(11, 11))
+            }
+        } else {
+            // 大号棋盘，计算适当的星位点
+            val rowStep = boardSizeRows / 6
+            val colStep = boardSizeCols / 6
             
-            canvas.drawCircle(cx, cy, radius, blackPaint)
+            // 添加四角的星位点
+            starPoints.add(Pair(rowStep, colStep))
+            starPoints.add(Pair(rowStep, boardSizeCols - colStep - 1))
+            starPoints.add(Pair(boardSizeRows - rowStep - 1, colStep))
+            starPoints.add(Pair(boardSizeRows - rowStep - 1, boardSizeCols - colStep - 1))
+            
+            // 添加中心星位点
+            starPoints.add(Pair(boardSizeRows / 2, boardSizeCols / 2))
+            
+            // 如果棋盘足够大，添加更多的星位点
+            if (boardSizeRows >= 20 && boardSizeCols >= 20) {
+                starPoints.add(Pair(rowStep, boardSizeCols / 2))
+                starPoints.add(Pair(boardSizeRows - rowStep - 1, boardSizeCols / 2))
+                starPoints.add(Pair(boardSizeRows / 2, colStep))
+                starPoints.add(Pair(boardSizeRows / 2, boardSizeCols - colStep - 1))
+            }
+        }
+        
+        // 绘制星位点
+        for ((row, col) in starPoints) {
+            if (row < boardSizeRows && col < boardSizeCols) {
+                val cx = padding + col * cellSize
+                val cy = padding + row * cellSize
+                val radius = cellSize * 0.15f
+                
+                canvas.drawCircle(cx, cy, radius, blackPaint)
+            }
         }
     }
 
     private fun drawPieces(canvas: Canvas) {
-        for (i in 0 until boardSize) {
-            for (j in 0 until boardSize) {
+        for (i in 0 until boardSizeRows) {
+            for (j in 0 until boardSizeCols) {
                 if (board[i][j] != 0) {
                     val cx = padding + j * cellSize
                     val cy = padding + i * cellSize
@@ -216,7 +255,7 @@ class GomokuView @JvmOverloads constructor(
             val row = ((y - padding) / cellSize + 0.5f).toInt()
 
             // 判断位置是否有效
-            if (row in 0 until boardSize && col in 0 until boardSize && board[row][col] == 0) {
+            if (row in 0 until boardSizeRows && col in 0 until boardSizeCols && board[row][col] == 0) {
                 // 放置棋子
                 placePiece(row, col)
                 return true
@@ -293,7 +332,7 @@ class GomokuView @JvmOverloads constructor(
         // 正向检查
         var r = row + rowDir
         var c = col + colDir
-        while (r in 0 until boardSize && c in 0 until boardSize && board[r][c] == piece) {
+        while (r in 0 until boardSizeRows && c in 0 until boardSizeCols && board[r][c] == piece) {
             count++
             r += rowDir
             c += colDir
@@ -302,7 +341,7 @@ class GomokuView @JvmOverloads constructor(
         // 反向检查
         r = row - rowDir
         c = col - colDir
-        while (r in 0 until boardSize && c in 0 until boardSize && board[r][c] == piece) {
+        while (r in 0 until boardSizeRows && c in 0 until boardSizeCols && board[r][c] == piece) {
             count++
             r -= rowDir
             c -= colDir
@@ -328,10 +367,37 @@ class GomokuView @JvmOverloads constructor(
         ai.setDifficultyLevel(level)
     }
 
+    // 设置棋盘尺寸
+    fun setBoardSize(size: Int) {
+        setBoardSize(size, size)
+    }
+    
+    // 设置非正方形棋盘尺寸
+    fun setBoardSize(rows: Int, cols: Int) {
+        if (rows <= 0 || cols <= 0) return
+        
+        boardSizeRows = rows
+        boardSizeCols = cols
+        
+        // 重新初始化棋盘数组
+        board = Array(boardSizeRows) { IntArray(boardSizeCols) { 0 } }
+        
+        // 更新AI的棋盘尺寸
+        ai.setBoardSize(max(boardSizeRows, boardSizeCols))
+        
+        // 重置游戏
+        resetGame()
+    }
+
+    // 获取当前棋盘尺寸
+    fun getBoardSize(): Pair<Int, Int> {
+        return Pair(boardSizeRows, boardSizeCols)
+    }
+
     // 重置游戏
     fun resetGame() {
-        for (i in 0 until boardSize) {
-            for (j in 0 until boardSize) {
+        for (i in 0 until boardSizeRows) {
+            for (j in 0 until boardSizeCols) {
                 board[i][j] = 0
             }
         }

@@ -2,7 +2,7 @@ package com.example.myapplication
 
 import kotlin.random.Random
 
-class GomokuAI(private val boardSize: Int) {
+class GomokuAI(private var boardSize: Int) {
 
     // 难度级别：0=简单，1=中等，2=困难
     private var difficultyLevel = 1
@@ -44,6 +44,13 @@ class GomokuAI(private val boardSize: Int) {
     // 设置棋盘状态
     fun setBoard(boardState: Array<IntArray>) {
         board = boardState
+    }
+    
+    // 设置棋盘大小
+    fun setBoardSize(size: Int) {
+        if (size > 0) {
+            boardSize = size
+        }
     }
 
     // 获取AI的下一步落子位置

@@ -20,6 +20,8 @@ class GameActivity : ComponentActivity() {
     // 游戏设置
     private var gameMode = 0
     private var difficulty = 1
+    private var boardSizeRows = 15
+    private var boardSizeCols = 15
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,8 @@ class GameActivity : ComponentActivity() {
         // 获取Intent中的游戏设置
         gameMode = intent.getIntExtra("GAME_MODE", 0)
         difficulty = intent.getIntExtra("DIFFICULTY", 1)
+        boardSizeRows = intent.getIntExtra("BOARD_SIZE_ROWS", 15)
+        boardSizeCols = intent.getIntExtra("BOARD_SIZE_COLS", 15)
         
         // 初始化视图
         gomokuView = findViewById(R.id.gomoku_view)
@@ -38,8 +42,9 @@ class GameActivity : ComponentActivity() {
         winText = findViewById(R.id.win_text)
         winResetButton = findViewById(R.id.win_reset_button)
         
-        // 设置游戏模式和难度
+        // 设置游戏模式、难度和棋盘大小
         gomokuView.setDifficulty(difficulty)
+        gomokuView.setBoardSize(boardSizeRows, boardSizeCols)
         gomokuView.setGameMode(gameMode)
         
         // 设置游戏状态变化监听器
@@ -100,10 +105,16 @@ class GameActivity : ComponentActivity() {
             else -> ""
         }
         
-        val statusText = if (gameMode == 0) {
-            modeText
+        val boardSizeText = if (boardSizeRows == boardSizeCols) {
+            "${boardSizeRows}x${boardSizeCols}"
         } else {
-            "$modeText - $difficultyText"
+            "${boardSizeRows}x${boardSizeCols}"
+        }
+        
+        val statusText = if (gameMode == 0) {
+            "$modeText - $boardSizeText"
+        } else {
+            "$modeText - $difficultyText - $boardSizeText"
         }
         
         gameStatusText.text = statusText

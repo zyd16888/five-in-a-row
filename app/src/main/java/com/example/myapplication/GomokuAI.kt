@@ -4,6 +4,9 @@ import kotlin.random.Random
 
 class GomokuAI(private val boardSize: Int) {
 
+    // 难度级别：0=简单，1=中等，2=困难
+    private var difficultyLevel = 1
+    
     // 棋盘状态的引用
     private lateinit var board: Array<IntArray>
     
@@ -28,6 +31,16 @@ class GomokuAI(private val boardSize: Int) {
         intArrayOf(1, -1)  // 反对角线
     )
 
+    // 设置难度级别
+    fun setDifficultyLevel(level: Int) {
+        difficultyLevel = level
+    }
+    
+    // 获取当前难度级别
+    fun getDifficultyLevel(): Int {
+        return difficultyLevel
+    }
+    
     // 设置棋盘状态
     fun setBoard(boardState: Array<IntArray>) {
         board = boardState
@@ -45,25 +58,67 @@ class GomokuAI(private val boardSize: Int) {
             )
         }
 
+        // 简单难度时，有一定概率随机下棋
+        if (difficultyLevel == 0 && Random.nextDouble() < 0.4) {
+            return getRandomValidMove()
+        }
+
         // 评估每个空位的分数
         var bestScore = -1
-        var bestMove = Pair(-1, -1)
+        var bestMoves = mutableListOf<Pair<Int, Int>>()
 
         for (i in 0 until boardSize) {
             for (j in 0 until boardSize) {
                 if (board[i][j] == 0) { // 空位
                     val score = evaluatePosition(i, j)
-                    if (score > bestScore) {
-                        bestScore = score
-                        bestMove = Pair(i, j)
+                    
+                    // 根据难度调整分数比较逻辑
+                    when {
+                        score > bestScore -> {
+                            bestScore = score
+                            bestMoves.clear()
+                            bestMoves.add(Pair(i, j))
+                        }
+                        score == bestScore -> {
+                            bestMoves.add(Pair(i, j))
+                        }
                     }
                 }
             }
         }
 
-        return bestMove
+        // 随机选择一个最佳移动（简单难度有更多随机性）
+        return if (bestMoves.isNotEmpty()) {
+            // 简单难度不总是选择最佳移动
+            if (difficultyLevel == 0 && bestMoves.size > 1 && Random.nextDouble() < 0.3) {
+                bestMoves[Random.nextInt(1, bestMoves.size)]
+            } else {
+                bestMoves[0]
+            }
+        } else {
+            getRandomValidMove()
+        }
     }
 
+    // 获取随机有效移动
+    private fun getRandomValidMove(): Pair<Int, Int> {
+        val validMoves = mutableListOf<Pair<Int, Int>>()
+        
+        for (i in 0 until boardSize) {
+            for (j in 0 until boardSize) {
+                if (board[i][j] == 0) {
+                    validMoves.add(Pair(i, j))
+                }
+            }
+        }
+        
+        return if (validMoves.isNotEmpty()) {
+            validMoves[Random.nextInt(validMoves.size)]
+        } else {
+            Pair(-1, -1)
+        }
+    }
+    
     // 检查是否是空棋盘
     private fun isEmptyBoard(): Boolean {
         for (i in 0 until boardSize) {
@@ -90,11 +145,18 @@ class GomokuAI(private val boardSize: Int) {
             humanScore += evaluateDirection(row, col, dir[0], dir[1], humanPiece)
         }
 
-        // 优先防守，如果玩家快要赢了，则权重更高
-        return if (humanScore > aiScore * 1.5) {
-            humanScore * 2
-        } else {
-            aiScore
+        // 根据难度级别调整防守和进攻的权重
+        return when (difficultyLevel) {
+            0 -> { // 简单难度：防守意识弱，进攻随机
+                if (humanScore > aiScore * 2) humanScore else aiScore
+            }
+            1 -> { // 中等难度：平衡防守和进攻
+                if (humanScore > aiScore * 1.5) (humanScore * 2).toInt() else aiScore
+            }
+            2 -> { // 困难难度：强化防守和进攻
+                if (humanScore > aiScore * 1.2) (humanScore * 2.5).toInt() else (aiScore * 1.2).toInt()
+            }
+            else -> if (humanScore > aiScore * 1.5) (humanScore * 2).toInt() else aiScore
         }
     }
 
@@ -102,12 +164,15 @@ class GomokuAI(private val boardSize: Int) {
     private fun evaluateDirection(row: Int, col: Int, rowDir: Int, colDir: Int, piece: Int): Int {
         val consecutive = countConsecutive(row, col, rowDir, colDir, piece)
         
+        // 困难模式下提高评分
+        val difficultyMultiplier = if (difficultyLevel == 2 && piece == aiPiece) 1.2 else 1.0
+        
         return when(consecutive) {
-            5 -> winScore
-            4 -> fourScore
-            3 -> threeScore
-            2 -> twoScore
-            1 -> oneScore
+            5 -> (winScore * difficultyMultiplier).toInt()
+            4 -> (fourScore * difficultyMultiplier).toInt()
+            3 -> (threeScore * difficultyMultiplier).toInt()
+            2 -> (twoScore * difficultyMultiplier).toInt()
+            1 -> (oneScore * difficultyMultiplier).toInt()
             else -> 0
         }
     }

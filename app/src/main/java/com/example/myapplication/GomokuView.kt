@@ -29,7 +29,10 @@ class GomokuView @JvmOverloads constructor(
     private var gameOver = false
 
     // 游戏模式: 0=双人对战, 1=人机对战(玩家先手), 2=人机对战(AI先手)
-    private var gameMode = 0
+    private var gameMode = 1
+
+    // AI难度: 0=简单, 1=中等, 2=困难
+    private var difficulty = 1
 
     // AI实例
     private val ai = GomokuAI(boardSize)
@@ -317,6 +320,12 @@ class GomokuView @JvmOverloads constructor(
         if (gameMode == 2) {
             postDelayed({ makeAIMove() }, 500)
         }
+    }
+
+    // 设置AI难度
+    fun setDifficulty(level: Int) {
+        difficulty = level
+        ai.setDifficultyLevel(level)
     }
 
     // 重置游戏

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 卡片边框宽度 -->
+    <dimen name="card_stroke_width_selected">2dp</dimen>
+    <dimen name="card_stroke_width_normal">1dp</dimen>
+    <dimen name="card_elevation_normal">2dp</dimen>
+    <dimen name="card_elevation_selected">6dp</dimen>
+</resources> 

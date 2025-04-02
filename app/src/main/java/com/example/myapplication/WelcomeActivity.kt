@@ -7,11 +7,17 @@ import android.widget.RadioGroup
 import androidx.activity.ComponentActivity
 import android.graphics.Color
 import android.app.AlertDialog
-import android.content.DialogInterface
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import com.google.android.material.button.MaterialButton
 
 class WelcomeActivity : ComponentActivity() {
     
@@ -20,7 +26,7 @@ class WelcomeActivity : ComponentActivity() {
     private lateinit var boardSizeRadioGroup: RadioGroup
     private lateinit var boardColorRadioGroup: RadioGroup
     private lateinit var customColorButton: ImageButton
-    private lateinit var startGameButton: Button
+    private lateinit var startGameButton: MaterialButton
     
     // 游戏选项
     private var gameMode = 0
@@ -33,6 +39,9 @@ class WelcomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
         
+        // 设置沉浸式状态栏（使用新API替换已弃用的API）
+        setupImmersiveMode()
+        
         // 初始化视图
         modeRadioGroup = findViewById(R.id.mode_radio_group)
         difficultyRadioGroup = findViewById(R.id.difficulty_radio_group)
@@ -40,6 +49,9 @@ class WelcomeActivity : ComponentActivity() {
         boardColorRadioGroup = findViewById(R.id.board_color_radio_group)
         customColorButton = findViewById(R.id.custom_color_button)
         startGameButton = findViewById(R.id.start_game_button)
+        
+        // 更新颜色按钮初始颜色
+        updateColorButtonBackground(boardColor)
         
         // 设置游戏模式选择监听
         modeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -90,6 +102,7 @@ class WelcomeActivity : ComponentActivity() {
                 R.id.color_green -> "#4CAF50"    // 绿色
                 else -> boardColor // 保持自定义颜色不变
             }
+            updateColorButtonBackground(boardColor)
         }
         
         // 设置自定义颜色按钮点击事件
@@ -103,10 +116,43 @@ class WelcomeActivity : ComponentActivity() {
         }
         
         // 默认设置
-        modeRadioGroup.check(R.id.mode_player_first)
+        modeRadioGroup.check(R.id.mode_two_player)
         difficultyRadioGroup.check(R.id.difficulty_medium)
         boardSizeRadioGroup.check(R.id.size_15)
         boardColorRadioGroup.check(R.id.color_default)
+    }
+    
+    private fun setupImmersiveMode() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Android 11及以上版本使用新API
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            // 已弃用的方法调用，使用上面的WindowCompat替代
+            // window.setDecorFitsSystemWindows(false)
+            window.insetsController?.let {
+                it.hide(WindowInsets.Type.statusBars())
+                it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            // 针对Android 11以下版本使用旧API
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE 
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            )
+            @Suppress("DEPRECATION")
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        }
+    }
+    
+    private fun updateColorButtonBackground(colorHex: String) {
+        try {
+            val drawable = customColorButton.background as GradientDrawable
+            drawable.setColor(Color.parseColor(colorHex))
+        } catch (e: Exception) {
+            // 如果出错，使用默认颜色
+            Toast.makeText(this, "颜色设置出错，使用默认颜色", Toast.LENGTH_SHORT).show()
+        }
     }
     
     private fun showColorPickerDialog() {
@@ -127,12 +173,8 @@ class WelcomeActivity : ComponentActivity() {
                 boardColor = colors[which]
                 // 选择自定义颜色后，选中自定义选项
                 boardColorRadioGroup.check(R.id.color_custom)
-                // 设置自定义颜色按钮的背景色
-                try {
-                    customColorButton.setBackgroundColor(Color.parseColor(boardColor))
-                } catch (e: Exception) {
-                    Toast.makeText(this, "无效的颜色代码", Toast.LENGTH_SHORT).show()
-                }
+                // 更新自定义颜色按钮的背景色
+                updateColorButtonBackground(boardColor)
             }
             .show()
     }

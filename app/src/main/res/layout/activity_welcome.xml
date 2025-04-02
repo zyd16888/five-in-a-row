@@ -1,351 +1,471 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- TailwindCSS CDN: https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@drawable/gradient_background"
     tools:context=".WelcomeActivity">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/title_card"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="五子棋"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/settings_card"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
-        app:cardCornerRadius="12dp"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="24dp"
         app:cardElevation="8dp"
+        android:alpha="0.95"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/title_text"
+        app:layout_constraintHeight_percent="0.75">
 
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="16dp"
-            android:text="五子棋"
-            android:textColor="#333333"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/mode_card"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.16"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_card">
-
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="12dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="游戏模式"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/mode_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/mode_two_player"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:padding="4dp"
-                    android:text="双人对战"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/mode_player_first"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="人机对战 - 玩家先手"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/mode_ai_first"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="人机对战 - AI先手"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-            </RadioGroup>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/difficulty_card"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.16"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mode_card">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="12dp">
-  
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="难度级别"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/difficulty_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/difficulty_easy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="简单"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/difficulty_medium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:padding="4dp"
-                    android:text="中等"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/difficulty_hard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="困难"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-            </RadioGroup>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/board_size_card"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/difficulty_card">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="12dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="棋盘大小"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/board_size_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/size_15"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:text="15x15"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/size_20"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="20x20"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/size_30"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="30x30"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/size_20_40"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="20x40"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-            </RadioGroup>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/board_color_card"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_size_card">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="12dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="棋盘颜色"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:clipToPadding="false">
 
-                <RadioGroup
-                    android:id="@+id/board_color_radio_group"
-                    android:layout_width="0dp"
+                <!-- 游戏模式选择 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
 
-                    <RadioButton
-                        android:id="@+id/color_default"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="默认木色"
-                        android:textColor="#333333"
-                        android:textSize="14sp" />
+                        android:text="游戏模式"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
 
-                    <RadioButton
-                        android:id="@+id/color_green"
-                        android:layout_width="0dp"
+                    <RadioGroup
+                        android:id="@+id/mode_radio_group"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="护眼绿"
-                        android:textColor="#333333"
-                        android:textSize="14sp" />
+                        android:orientation="vertical">
 
-                    <RadioButton
-                        android:id="@+id/color_custom"
-                        android:layout_width="0dp"
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/mode_two_player"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:padding="12dp"
+                                android:text="双人对战"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:button="@null"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/mode_player_first"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:text="人机对战 - 玩家先手"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:button="@null"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/mode_ai_first"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:text="人机对战 - AI先手"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:button="@null"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                        </com.google.android.material.card.MaterialCardView>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <!-- 难度级别选择 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="自定义"
-                        android:textColor="#333333"
-                        android:textSize="14sp" />
-                </RadioGroup>
+                        android:text="难度级别"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
 
-                <ImageButton
-                    android:id="@+id/custom_color_button"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@android:color/darker_gray"
-                    android:contentDescription="选择自定义颜色" />
+                    <RadioGroup
+                        android:id="@+id/difficulty_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/difficulty_easy"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:text="简单"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:button="@null" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/difficulty_medium"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:padding="12dp"
+                                android:text="中等"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:button="@null" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/difficulty_hard"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:text="困难"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:button="@null" />
+                        </com.google.android.material.card.MaterialCardView>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <!-- 棋盘大小选择 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="棋盘大小"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
+
+                    <RadioGroup
+                        android:id="@+id/board_size_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/size_15"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:padding="12dp"
+                                android:text="15x15"
+                                android:textColor="#000000"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:button="@null" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/size_20"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:text="20x20"
+                                android:textColor="#000000"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:button="@null" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/size_30"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:text="30x30"
+                                android:textColor="#000000"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:button="@null" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0">
+
+                            <RadioButton
+                                android:id="@+id/size_20_40"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:text="20x40"
+                                android:textColor="#000000"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:button="@null" />
+                        </com.google.android.material.card.MaterialCardView>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <!-- 棋盘颜色选择 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="32dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="棋盘颜色"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/board_color_radio_group"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="4dp"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="2dp"
+                                app:strokeWidth="1dp"
+                                app:strokeColor="#E0E0E0">
+
+                                <RadioButton
+                                    android:id="@+id/color_default"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:padding="12dp"
+                                    android:text="木色"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:gravity="center"
+                                    android:button="@null" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="4dp"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="2dp"
+                                app:strokeWidth="1dp"
+                                app:strokeColor="#E0E0E0">
+
+                                <RadioButton
+                                    android:id="@+id/color_green"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="12dp"
+                                    android:text="绿色"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:gravity="center"
+                                    android:button="@null" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="2dp"
+                                app:strokeWidth="1dp"
+                                app:strokeColor="#E0E0E0">
+
+                                <RadioButton
+                                    android:id="@+id/color_custom"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="12dp"
+                                    android:text="自定义"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:gravity="center"
+                                    android:button="@null" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </RadioGroup>
+
+                        <ImageButton
+                            android:id="@+id/custom_color_button"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/color_button_background"
+                            android:contentDescription="选择自定义颜色"
+                            android:elevation="2dp"
+                            app:tint="#000000" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 开始游戏按钮 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_game_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="开始游戏"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/button_background"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="32dp"
+                    app:elevation="8dp"
+                    app:rippleColor="#FFFFFF" />
             </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_color_card"
-        app:layout_constraintVertical_bias="0.7">
-
-        <Button
-            android:id="@+id/start_game_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_background"
-            android:paddingStart="40dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="40dp"
-            android:paddingBottom="8dp"
-            android:text="开始游戏"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        </androidx.core.widget.NestedScrollView>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout> 
